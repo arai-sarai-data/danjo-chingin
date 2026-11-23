@@ -1,0 +1,31 @@
+{
+ "repo": "arai-sarai-data/danjo-chingin",
+ "title": "男女賃金差ランキング",
+ "title_en": "Gender Pay Gap Ranking",
+ "short": "男女賃金差ランキング",
+ "short_en": "Gender Pay Gap Ranking",
+ "tagline": "同じ会社で、女性の賃金は男性の何割か。法律で公表が義務になった数字を、会社ごとに並べました。",
+ "tagline_en": "How much do women earn for every ¥100 men earn at the same company? The legally required disclosures, ranked.",
+ "color": "#d6336c",
+ "hashtags": [
+  "男女賃金格差",
+  "女性活躍"
+ ],
+ "langs": [
+  "ja",
+  "en"
+ ],
+ "search": {
+  "placeholder": "会社名で検索",
+  "placeholder_en": "Search"
+ },
+ "about": {
+  "what": "女性活躍推進法で公表が義務になった「男女の賃金の差異」を、厚生労働省のデータベースから集めて並べます。",
+  "method": "各社の公表値（男性の平均賃金=100としたときの女性の平均賃金）をそのまま使用。",
+  "notes": [
+   "同じ仕事の賃金差ではありません。",
+   "会社ごとに対象期間が違います。"
+  ]
+ },
+ "contact": "arai-sarai-data@proton.me"
+}
