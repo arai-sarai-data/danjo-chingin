@@ -10,18 +10,23 @@ PAGE = "https://positive-ryouritsu.mhlw.go.jp/positivedb/opendata/"
 TOP = "https://positive-ryouritsu.mhlw.go.jp/positivedb/"
 
 
+ZIP_URL = PAGE + "download_b.html?w=99"   # 全体版（CSV・UTF-8 BOM付き・ZIP）
+
+
 def load():
-    urls = oc.links(PAGE, r"\.(csv|zip)(\?|$)")
-    oc.check(urls, "オープンデータのファイルが見つかりません")
-    frames = []
-    for u in urls:
-        b = oc.get(u, cache=re.sub(r"\W", "_", u)[-80:])
-        if u.lower().split("?")[0].endswith(".zip"):
-            for name, data in oc.unzip(b).items():
-                if name.lower().endswith(".csv"):
-                    frames.append(oc.read_csv(data))
-        else:
-            frames.append(oc.read_csv(b))
+    import glob, os
+    frames, blobs = [], []
+    try:
+        blobs.append(oc.get(ZIP_URL, headers={"Referer": PAGE}, cache="positivedb_all.zip"))
+    except Exception as e:
+        oc.log("direct download failed:", e)
+        local = sorted(glob.glob(os.path.join(os.path.dirname(__file__), "import", "*.zip")))
+        oc.check(local, "ダウンロードできませんでした。ブラウザで %s から全体版ZIPを保存し import/ に置いてください" % PAGE)
+        blobs.append(open(local[-1], "rb").read())
+    for b in blobs:
+        for name, data in oc.unzip(b).items():
+            if name.lower().endswith(".csv"):
+                frames.append(oc.read_csv(data))
     for df in frames:  # 賃金の差異の列を持つ表を使う
         try:
             oc.col(df, "賃金", "差異")
