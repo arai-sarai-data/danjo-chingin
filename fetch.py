@@ -17,7 +17,12 @@ def load():
     import glob, os
     frames, blobs = [], []
     try:
-        blobs.append(oc.get(ZIP_URL, headers={"Referer": PAGE}, cache="positivedb_all.zip"))
+        # このサイトは、先にダウンロードページを開いて受け取るクッキー（セッション）が無いと 403 になる
+        h = {"Referer": PAGE, "Accept": "text/html,application/xhtml+xml,application/zip,*/*;q=0.8", "Accept-Language": "ja,en;q=0.8",
+             "User-Agent": "Mozilla/5.0 (compatible; %s)" % oc.UA}
+        oc._polite(PAGE)
+        oc._session.get(PAGE, headers=h, timeout=60)
+        blobs.append(oc.get(ZIP_URL, headers=h, cache="positivedb_all.zip"))
     except Exception as e:
         oc.log("direct download failed:", e)
         local = sorted(glob.glob(os.path.join(os.path.dirname(__file__), "import", "*.zip")))
